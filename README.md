@@ -1,11 +1,8 @@
 <h3> Quick Todos </h3>
-<p>
-A simple app that helps manage your daily operations
-</p>
+<p> A simple app that helps manage your daily operations </p>
 Live app [here](https://witty-pebble-047900f0f.5.azurestaticapps.net/) 🚀
 
 <h5> How to setup locally </h5>
-
  <ul>
  <li> clone the project </li>
  <li> Ensure you are running Node>= VERSION 16 </li>
