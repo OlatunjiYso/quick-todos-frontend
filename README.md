@@ -4,9 +4,7 @@ A simple app that helps manage your daily operations
 </p>
 Live app [here](https://witty-pebble-047900f0f.5.azurestaticapps.net/) 🚀
 
-<h5>
-How to setup locally
- </h5>
+<h5> How to setup locally </h5>
 
  <ul>
  <li> clone the project </li>
@@ -20,6 +18,7 @@ How to setup locally
  <li> HTML & CSS </li>
  <li> React </li>
  </ul>
+
 
 
 
