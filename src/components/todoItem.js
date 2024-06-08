@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const TodoItem = ({ todo, updateTodo, deleteTodo }) => {
   const [mode, setMode] = useState("view");
   const [title, setTitle] = useState((todo || {}).title);
-  const [completed, setCompleted] = useState((todo || {}).completed);
+  const [busy, setBusy] = useState(false);
 
   const handleChange = (e) => {
     setTitle(e.target.value);
@@ -17,12 +17,27 @@ const TodoItem = ({ todo, updateTodo, deleteTodo }) => {
     if(type === 'status') {
         updated = { ...todo, completed: !todo.completed};
      }
+     try {
+    setBusy(true);
     await updateTodo(todo.id, updated);
     setMode("view");
+    setBusy(false)
+     }
+      catch(err){
+        setBusy(false)
+     }
+    
   };
   const handleDelete = async (e) => {
-    e.preventDefault();
-    await deleteTodo(todo.id);
+    try{
+        setBusy(true);
+        e.preventDefault();
+        await deleteTodo(todo.id);
+        setBusy(false);
+    }
+    catch(err) {
+        setBusy(false);
+    }
   };
 
   return (
@@ -35,7 +50,7 @@ const TodoItem = ({ todo, updateTodo, deleteTodo }) => {
             justifyContent: "space-between",
             alignItems: "center",
             padding: "10px",
-            width: "60%",
+            width: "70%",
             border: "1px solid grey",
             margin: "5px auto",
             height: "20px",
@@ -52,9 +67,11 @@ const TodoItem = ({ todo, updateTodo, deleteTodo }) => {
                   fontSize: "12px",
                   backgroundColor: "#f5e3b0",
                   border: "none",
+                  cursor:'pointer'
                 }}
+                disabled={busy}
               >
-                Done
+               { busy? 'Marking...' : 'Mark as Done'}
               </button>
             }
             
@@ -68,6 +85,7 @@ const TodoItem = ({ todo, updateTodo, deleteTodo }) => {
                 margin: "0 4px",
                 color: "white",
                 border: "none",
+                cursor:'pointer'
               }}
             >
               Edit
@@ -80,9 +98,11 @@ const TodoItem = ({ todo, updateTodo, deleteTodo }) => {
                 fontSize: "12px",
                 backgroundColor: "#e693a5",
                 border: "none",
+                cursor:'pointer'
               }}
+              disabled={busy}
             >
-              Delete
+             { busy? 'Deleting' : 'Delete'}
             </button>
           </div>
         </div>
@@ -95,7 +115,7 @@ const TodoItem = ({ todo, updateTodo, deleteTodo }) => {
             justifyContent: "space-between",
             alignItems: "center",
             padding: "10px",
-            width: "60%",
+            width: "70%",
             border: "1px solid grey",
             margin: "5px auto",
             height: "20px",
@@ -106,9 +126,8 @@ const TodoItem = ({ todo, updateTodo, deleteTodo }) => {
             value={title}c
             onChange={(e) => handleChange(e)}
           ></input>
-          <button onClick={(e) => handleUpdate(e, 'title')} style={{ margin: "0 5px" }}>
-            {" "}
-            Save{" "}
+          <button onClick={(e) => handleUpdate(e, 'title')} style={{ margin: "0 5px" }} disabled={busy}>
+            {busy ? 'Saving': 'Save'}
           </button>
           <button onClick={() => setMode("view")}> Cancel </button>
         </div>

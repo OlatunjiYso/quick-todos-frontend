@@ -6,6 +6,7 @@ const TodoList = ()=> {
     const ROOT_URL = 'https://quicktodos.azurewebsites.net/api/TodoItems'
     const [ todos, setTodos ] = useState([]);
     const [ title, setTitle ] = useState('');
+    const [busy, setBusy] = useState(false);
 
 
 
@@ -29,12 +30,14 @@ const TodoList = ()=> {
             body: JSON.stringify({ title })
         };
         try{
+            setBusy(true)
             const response = await fetch(ROOT_URL, requestOptions);
            const newTodo = await response.json();
            setTodos([ newTodo, ...todos ]);
            setTitle('')
+           setBusy(false)
         } catch(err) {
-
+            setBusy(false)
         }
         
     }
@@ -75,11 +78,11 @@ const TodoList = ()=> {
     },[])
 
   return (
-    <div style={{width:'50%', margin: '20px auto'}}>
+    <div style={{width:'80%', margin: '20px auto'}}>
     <h3> Quick Todos</h3>
     <div style={{margin: '10px auto 50px auto'}}>
         <input type='text' value={title} onChange={(e)=>setTitle(e.target.value)}/>
-        <button style={{margin: '0 8px'}} onClick={(e)=>addTodo(e)}> Add  </button>
+        <button style={{margin: '0 8px', cursor:'pointer'}} onClick={(e)=>addTodo(e)} disabled={busy}> {busy? 'Adding': 'Add'}  </button>
     </div>
     { 
         todos.map((todo)=> <TodoItem key={todo.id} todo={todo} updateTodo={updateTodo} deleteTodo={deleteTodo}/>)
